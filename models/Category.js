@@ -9,7 +9,7 @@ Category.init(
     cat_name: DataTypes.STRING
   },
   {
-    sequelize,
+    sequelize: require('../config/connection'),
     timestamps: false,
     freezeTableName: true,
     underscored: true,

@@ -6,10 +6,13 @@ class Tag extends Model {}
 
 Tag.init(
   {
-    // define columns
+    tag_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   },
   {
-    sequelize,
+    sequelize: require('../config/connection'),
     timestamps: false,
     freezeTableName: true,
     underscored: true,
