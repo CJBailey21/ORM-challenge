@@ -7,8 +7,8 @@ router.get('/', (req, res) => {
   Category.findAll({
     include: Product
   })
-    .then(cat => {
-    res.json(cat)
+    .then(data => {
+    res.json(data)
     })
 });
 
@@ -25,31 +25,39 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  Category.create({ Category: req.body.category })
-    .then(new_cat => res.json(new_cat))
-});
+  const category = {
+    category_name: req.body.category_name
+  }
+  Category.create(category )
+  .then(new_cat => res.json(new_cat))
+})
 
 router.put('/:id', (req, res) => {
-  const cat = Category.findOne({
+
+  Category.update(
+    req.body,
+    {
     where: {
       id: req.params.id
     }
   })
-
-  if (!cat) return res.status(404).json({})
-
-  cat.id = req.body.id
-  res.json(cat)
+  .then((new_cat) => res.json(new_cat))
+  .catch(err => {
+    console.log(err);
+  })
 });
 
 router.delete('/:id', (req, res) => {
   Category.destroy({
     where: {
-      category: req.params.id
+      id: req.params.id
     }
   })
     .then(cat => {
     res.json(cat)
+  })
+  .catch(err => {
+    console.log(err);
   })
 });
 

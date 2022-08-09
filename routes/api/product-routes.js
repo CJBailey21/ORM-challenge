@@ -4,11 +4,11 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // get all products
-router.get('/products', (req, res) => {
+router.get('/', (req, res) => {
   Product.findAll({
     include: [
-      { Category: Category.category },
-      { Tag: Tag.tag_name }
+      { model: Category },
+      { model: Tag }
     ]
   })
     .then(pro => {
@@ -17,14 +17,14 @@ router.get('/products', (req, res) => {
 });
 
 // get one product
-router.get('/products:id', (req, res) => {
+router.get('/:id', (req, res) => {
   Product.findAll({
     where: {
       id: req.params.id
     },
     include: [
-      { Category: Category.category },
-      { Tag: Tag.tag_name }
+      { model: Category },
+      { model: Tag }
     ]
   })
   .then(pro => {
@@ -33,7 +33,7 @@ router.get('/products:id', (req, res) => {
 });
 
 // create new product
-router.post('/products', (req, res) => {
+router.post('/', (req, res) => {
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -65,7 +65,7 @@ router.post('/products', (req, res) => {
 });
 
 // update product
-router.put('/product:id', (req, res) => {
+router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
     where: {
@@ -106,14 +106,17 @@ router.put('/product:id', (req, res) => {
     });
 });
 
-router.delete('/products:id', (req, res) => {
+router.delete('/:id', (req, res) => {
   Product.destroy({
     where: {
-      Product: req.body.id
+      id: req.params.id
     }
   })
     .then(pro => {
     res.json(pro)
+  })
+  .catch(err => {
+    console.log(err);
   })
 });
 
